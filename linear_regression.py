@@ -1,27 +1,13 @@
 from matplotlib import pyplot as plt
+from math import sqrt
 
 l1 = [5,17,11,8,14,5] # sample list: tips
 l2 = [34, 108, 64, 88, 99, 51] # bills
-
 
 def mean(list):
     q = len(list)
     s = sum(list)
     return s / q
-
-def return_errors (list): # errors = residuals
-    for item in list:
-        yield item - mean(list)
-
-def square_errors(list):
-    s = []
-    for item in list:
-        s.append(item**2)
-    return s
-
-def SSE(list): # sum of square errors
-    errors = return_errors(list)
-    return sum(square_errors(errors))
 
 # the goal of simple linear regression is to create a linear model that
 # minimizes the sum of squares of the residuals
@@ -77,6 +63,7 @@ def estimate_coefficients(x, y):
 # yhat = beta0 + beta1 * xi
 # being beta0 the intercept of x,y
 # and beta1 the slope of x,y
+
 def get_regression_line(x, y, coefficient):
     l = []
     for i in x:
@@ -88,4 +75,52 @@ def get_regression_line(x, y, coefficient):
     """
     return l
         
+def return_errors (list): # errors = residuals
+    for item in list:
+        yield item - mean(list)
 
+def square_errors(list):
+    s = []
+    for item in list:
+        s.append(item**2)
+    return s
+
+# the SST is the sum of the squares difference between
+# dependent variable and the mean
+
+# SSR is the sum of the square difference
+# between the regression-predicted
+# value and the mean (sum of squares due to regression)
+
+# SSE is the sum of the square difference
+# between the values of the
+# dependente variable and the predicted value
+
+def SST(list): # sum of squares total
+    # sum of the differences between the
+    # dependent variable and its mean
+    errors = return_errors(list)
+    return sum(square_errors(errors))
+
+def SSR(regline_l, var_l):
+    # get the SSR out of the differences between
+    # the values predicted by the regression and
+    # the mean of var_l
+    l = []
+    for i in regline_l:
+        l.append(i - mean(var_l))
+    return sum([x**2 for x in l])
+
+def SSE(depvar_l, regline_l):
+    # sum of square errors, comparing
+    # the dependent variable to the
+    # regression line 
+    l = []
+    for i,j in zip(depvar_l, regline_l):
+        l.append(i-j)
+    return sum([x**2 for x in l])
+
+def determination_coefficient(SSR, SST):
+    return SSR/SST
+
+# for data to be good, we want the SSE to be as low as possible
