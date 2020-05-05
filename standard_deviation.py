@@ -22,3 +22,4 @@ def std_deviation(l, is_sample=True):
         return sqrt(variance(l))
     else:
         return sqrt(variance(l, is_sample=False))
+
